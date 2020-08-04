@@ -6,14 +6,55 @@
 
 <h1><%= guild.name %></h1>
 <form style="margin-top: 1em;" method="POST">
-  <p>Prefix:</p>
-  <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix."><br><br>
-  <p>Guild name:</p>
-  <input type="text" name="gname" value="<%= settings.gname %>" placeholder=<%= guild.name %>>
+  <fieldset>
+    <label for="inputPrefix">
+      Prefix
+    </label>
+    <input type="text" name="inputPrefix" id="inputPrefix" value="<%= settings.prefix %>" placeholder="Your prefix.">
+  </fieldset>
+  <fieldset>
+    <label for="inputName">
+      Guild Name
+    </label>
+    <input type="text" name="inputName" id="inputName" value="<%= settings.gname %>" placeholder="<%= guild.name %>">
+  </fieldset>
+  <fieldset>
+    <label for="inputIcon">
+      Guild Icon
+    </label>
+    <input type="file" name="inputIcon" id="inputIcon">
+    <input type="hidden" name="iconHidden" id="iconHidden" value="">
+  </fieldset>
   <button type="submit">Save Settings</button>
 </form>
 
 <a href="../dashboard/">Go back to dashboard</a>
 
+<script>
+  (function() {
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+      document.getElementById('inputIcon').addEventListener('change', handleFileSelect, false);
+    } else {
+      alert('The File APIs are not fully supported in this browser.');
+    }
+    
+    function handleFileSelect(evt) {
+      console.log("inside handleFileSelect")
+      var f = evt.target.files[0]; // FileList object
+      var reader = new FileReader();
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          var binaryData = e.target.result;
+          //Converting Binary Data to base 64
+          var base64String = window.btoa(binaryData);
+          document.getElementById('iconHidden').value = base64String;
+        };
+      })(f);
+      // Read in the image file as a data URL.
+      reader.readAsBinaryString(f);
+    }
+  })();
+</script>
 </body>
 </html>
