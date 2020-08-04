@@ -10,6 +10,7 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const Discord = require("discord.js");
 const GuildSettings = require("../models/settings");
+const fs = require("fs");
 
 // We instantiate express app and the session store.
 const app = express();
@@ -141,6 +142,8 @@ module.exports = async (client) => {
 
   app.use('/assets', express.static(dataDir + `/assets`));
   
+  // Guild Icon
+
   // Settings endpoint.
   app.get("/dashboard/:guildID", checkAuth, async (req, res) => {
     // We validate the request, check if guild exists, member is in guild and if member has minimum permissions, if not, we redirect it back.
@@ -186,8 +189,31 @@ module.exports = async (client) => {
         }
       
         // We set the prefix of the server settings to the one that was sent in request from the form.
-        storedSettings.gname = req.body.gname;
-        storedSettings.prefix = req.body.prefix;
+        storedSettings.gname = req.body.inputName;
+        storedSettings.prefix = req.body.inputPrefix;
+        var b64s = req.body.iconHidden;
+        if (!(b64s == "" || b64s.length < 10)) {
+          var base64Data = b64s.replace(/^data:image\/png;base64,/, "");
+          fs.writeFile("out.png", base64Data, 'base64', function (err) {
+            if (err) {
+              console.log("file not created");
+            }
+          });
+          guild.setIcon('./out.png').then(g => {
+            fs.unlink('./out.png', function (err) {
+              if (err) {
+                console.log("file not deleted");
+              }
+            });
+          }).catch(err => {
+            console.error;
+            fs.unlink('./out.png', function (err) {
+              if (err) {
+                console.log("file not deleted");
+              }
+            });
+          });
+        }
         // We save the settings.
         await storedSettings.save().catch(() => {});
 
