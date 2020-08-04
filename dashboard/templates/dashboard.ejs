@@ -1,0 +1,28 @@
+<%- include("partials/header", { bot, user, path, title: "Dashboard" }) %>
+
+<div class='wrapper'>
+  <div class='wrapper2'>
+    <% user.guilds.forEach(guild => {
+      const permsOnGuild = new perms(guild.permissions);
+      if(!permsOnGuild.has("MANAGE_GUILD")) return;
+      %>
+      <div>
+        <fieldset class="gF">
+          <label for="guild">
+            <image src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" width="25px" height="25px" />
+            <%= guild.name %>
+          </label>
+          <% if (bot.guilds.cache.get(guild.id)) { %>
+            <button class="right" onclick="changeGuild('<%= guild.id %>')">Edit</button>
+          <% } else { %>
+            <button class="right" onclick="invite('<%= bot.user.id %>','<%= guild.id %>','<%= bot.config.domain %>','<%= bot.config.port %>')">Invite</button>
+          <% } %>
+        </fieldset>
+      </div>
+    <% }); %>
+  </div>
+  <div style="width: 100%; height: 90%;">
+    <iframe id="iFrameGuild" src="" width="100%" height="100%" frameborder="0"></iframe>
+  </div>
+</div>
+<%- include("partials/footer") %>

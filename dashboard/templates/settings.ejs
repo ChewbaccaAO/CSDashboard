@@ -1,0 +1,19 @@
+<%- include("partials/header", { bot, user, path, title: "Home" }) %>
+
+<% if (alert) { %>
+  <p><%= alert %></p><br>
+<% } %>
+
+<h1><%= guild.name %></h1>
+<form style="margin-top: 1em;" method="POST">
+  <p>Prefix:</p>
+  <input type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix."><br><br>
+  <p>Guild name:</p>
+  <input type="text" name="gname" value="<%= settings.gname %>" placeholder=<%= guild.name %>>
+  <button type="submit">Save Settings</button>
+</form>
+
+<a href="../dashboard/">Go back to dashboard</a>
+
+</body>
+</html>

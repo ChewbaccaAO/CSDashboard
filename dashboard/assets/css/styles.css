@@ -1,0 +1,43 @@
+.gF {
+    margin: 3px;
+    border-radius: 7px;
+}
+
+.gF label {
+    font-size: 20px;    
+}
+
+.right {
+    float: right;
+}
+
+#logout {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-column-gap: 1em;
+}
+
+.wrapper > div {
+    background: #eee;
+    padding: 1em;
+}
+
+.wrapper > div:nth-child(odd) {
+    background: #ddd;
+}
+
+.wrapper2 {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-column-gap: 1em;
+}
+
+.wrapper2 > div {
+    padding: 1em;
+}
